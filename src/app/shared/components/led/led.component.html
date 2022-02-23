@@ -1,6 +1,6 @@
 <div class="main-container">
 
-    <div class="led-container" *ngFor="let item of splitedNumber; let i = index;">
+    <div class="led-container" *ngFor="let item of splitedNumber; let idx = index;" [mapAddSignClass]=" idx ">
 
         <div class="first-column">
     
