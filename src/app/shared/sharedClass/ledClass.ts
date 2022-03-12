@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 
 @Injectable()
-export class LEDGenerator {
+export class LEDGeneratorService {
 
     private TOP_LEFT:string = ".ditigal-member-top-left";
     private BOTTOM_LEFT:string = ".ditigal-member-bottom-left";
@@ -71,7 +71,7 @@ export class LEDGenerator {
     trunOnNumber(numberHTMLElementContainer: HTMLDivElement, expression:string, number: number) {
 
         // 1. reset the number_HTMLElementContainer.
-        LEDGenerator.resetNumberHTMLElementContainer(numberHTMLElementContainer, expression, this.TURN_ON_EDGE_CSS_CLASS);
+        LEDGeneratorService.resetNumberHTMLElementContainer(numberHTMLElementContainer, expression, this.TURN_ON_EDGE_CSS_CLASS);
         
         // 2. turn on the LED based on entered-number.
         const numberSpecification = this.numberSign[number];
