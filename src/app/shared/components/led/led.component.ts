@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { LEDGeneratorService } from '../../sharedClass/ledClass';
 
 @Component({
@@ -8,7 +9,7 @@ import { LEDGeneratorService } from '../../sharedClass/ledClass';
 })
 export class LEDComponent implements OnChanges, OnInit, AfterViewInit {
 
-  @Input() number:string;
+  @Input() formControl:FormControl;
 
   splitedNumber: string[] = [];
   decimalPointIndex:number = 0;
@@ -16,12 +17,8 @@ export class LEDComponent implements OnChanges, OnInit, AfterViewInit {
   constructor(private ledGeneratorService: LEDGeneratorService) { }
 
   ngOnChanges() {
-      
-    const _splitedNumber: string[] = Array.from(this.number);
 
-    this.decimalPointIndex = _splitedNumber.findIndex((item: string) => item === ".");
-
-    this.splitedNumber = _splitedNumber.filter((item: string, index: number) => index !== this.decimalPointIndex);
+    this.handleEnteredNumber();
 
   }
 
@@ -31,24 +28,57 @@ export class LEDComponent implements OnChanges, OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
 
-    this.splitedNumber.map((number, index) => {
-
-      const divElement: HTMLDivElement = document.querySelector(`.h${index + 1}`) as HTMLDivElement;
-      divElement.setAttribute("on", "true");
-      const expression = "ditigal-member";
-
-      this.ledGeneratorService.trunOnNumber(divElement, expression, +number);
-
-      if ( index === this.decimalPointIndex - 1 ) {
-
-        const decimalPointHtmlDivElement: HTMLDivElement = divElement.querySelector("div.fourth-column")! as HTMLDivElement;
-        const afterElement: HTMLDivElement = decimalPointHtmlDivElement.querySelector("div.ditigal-decimal-point-after")! as HTMLDivElement;
-        afterElement.classList.add("decimal-point-active");
-
-      }
-
-    });
+    this.showNumber();
     
+  }
+
+  handleEnteredNumber() {
+
+    const nuumber:string = this.formControl.value; 
+
+    const _splitedNumber: string[] = Array.from(nuumber);
+
+    this.decimalPointIndex = _splitedNumber.findIndex((item: string) => item === ".");
+
+    this.splitedNumber = _splitedNumber.filter((item: string, index: number) => index !== this.decimalPointIndex);
+
+  }
+
+  selectFourthColumnHtmlDiv(divElement: HTMLDivElement) {
+
+    const decimaPointContainer: string = "div.fourth-column";
+    const decimalPointAfterContainer: string = "div.ditigal-decimal-point-after";
+
+    return divElement.querySelector(decimaPointContainer).querySelector(decimalPointAfterContainer)! as HTMLDivElement;
+
+  }
+
+  showNumber() {
+
+
+    const DECIMAL_POINT_ACTIVE_CSS_CLASS = "decimal-point-active";
+
+    if ( this.splitedNumber.every((item: string) => !!item && item !== "." ) ) {
+
+      this.splitedNumber.map((number, index) => {
+
+        const divElement: HTMLDivElement = document.querySelector(`.h${index + 1}`) as HTMLDivElement;
+        divElement.setAttribute("on", "true");
+        const expression = "ditigal-member";
+  
+        this.ledGeneratorService.trunOnNumber(divElement, expression, +number);
+  
+        if ( index === this.decimalPointIndex - 1 ) {
+  
+          const decimalPointAfterElm: HTMLDivElement = this.selectFourthColumnHtmlDiv(divElement);
+          decimalPointAfterElm.classList.add(DECIMAL_POINT_ACTIVE_CSS_CLASS);
+  
+        }
+  
+      });
+
+    }
+
   }
 
 }

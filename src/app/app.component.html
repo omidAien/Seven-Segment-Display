@@ -1,4 +1,6 @@
 
-<map-led [number]=" '125.798' " ></map-led>
+<form [formGroup]="sampleForm">
+    <map-led ngDefaultControl [formControl]=" getFormControlName('weight') " ></map-led>
+</form>
 
 <router-outlet></router-outlet>
