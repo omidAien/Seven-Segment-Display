@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LEDComponent } from './components/led/led.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddSignClassDirective } from './components/LED/Directives/add-sign-class.directive';
+import { LEDGenerator } from './sharedClass/led.class';
 
 
 
@@ -15,6 +16,9 @@ import { AddSignClassDirective } from './components/LED/Directives/add-sign-clas
   ],
   exports: [
     LEDComponent
+  ],
+  providers: [
+    LEDGenerator
   ]
 })
 export class SharedModule { }
